@@ -20,7 +20,9 @@ public class NetworkCamera : MonoBehaviour
         if (_target == null) return;
 
         _currentTargetTransform = _target.transform;
-        _newPosition = _currentTargetTransform.position - offset;
+
+        Vector3 rotatedOffset = _currentTargetTransform.rotation * offset;
+        _newPosition = _currentTargetTransform.position - rotatedOffset;
 
         transform.position = Vector3.MoveTowards(transform.position, _newPosition, 1f);
         transform.LookAt(_currentTargetTransform.position);
