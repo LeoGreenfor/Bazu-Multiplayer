@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
@@ -24,6 +25,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    [PunRPC]
     private void OnLowHealth()
     {
         gameObject.SetActive(false);
