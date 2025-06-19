@@ -4,20 +4,18 @@ using Photon.Realtime;
 using System;
 using UnityEngine;
 
-public class NetworkPlayer : MonoBehaviour
+[Photon.Pun.PunRPC]
+public class NetworkPlayer : MonoBehaviour, IPunObservable
 {
     private PhotonView photonView;
-    private GameObject Player;
+    private CharacterController characterController;
     private Vector3 RemotePlayerPosition;
     private Quaternion RemotePlayerRotation;
-    private float RemoteLookX;
-    private float RemoteLookZ;
-    private float LookXVel;
-    private float LookZVel;
 
     private void Awake()
     {
         photonView = GetComponent<PhotonView>();
+        characterController = GetComponent<CharacterController>();
 
         if (!photonView.IsMine)
         {
@@ -33,7 +31,7 @@ public class NetworkPlayer : MonoBehaviour
         var LagDistance = RemotePlayerPosition - transform.position;
 
         //High distance => sync is to much off => send to position
-        if (LagDistance.magnitude > 5f)
+        if (LagDistance.magnitude > 1f)
         {
             transform.position = RemotePlayerPosition;
             LagDistance = Vector3.zero;
@@ -42,28 +40,20 @@ public class NetworkPlayer : MonoBehaviour
         //ignore the y distance
         LagDistance.y = 0;
 
-        bool isJumping = RemotePlayerPosition.y - transform.position.y > 0.2f;
-
         if (LagDistance.magnitude < 0.11f)
         {
-            //Player is nearly at the point
-            //Player.Input.RunX = 0;
-            //Player.Input.RunZ = 0;
+            characterController.Move(Vector3.zero);
         }
         else
         {
-            //Player has to go to the point
-            //Player.Input.RunX = LagDistance.normalized.x;
-            //Player.Input.RunZ = LagDistance.normalized.z;
+            Vector3 moveDir = new Vector3(LagDistance.normalized.x, 0f, LagDistance.normalized.z);
+            //characterController.transform.position = Vector3.MoveTowards(transform.position, RemotePlayerPosition, 1f);
+            //characterController.Move(moveDir * 5f * Time.deltaTime);
         }
 
         //Look Smooth
-        //Player.transform.eulerAngles = new Vector3(
-        //    Mathf.SmoothDampAngle(Player.transform.eulerAngles.x, RemoteLookX, ref LookXVel, 0.2f),
-        //    Player.transform.eulerAngles.y,
-        //    Mathf.SmoothDamp(Player.Input.LookZ, RemoteLookZ, ref LookZVel, 0.2f););
-
-        Player.transform.rotation = RemotePlayerRotation;
+        characterController.transform.rotation = RemotePlayerRotation;
+        characterController.transform.position = Vector3.MoveTowards(transform.position, RemotePlayerPosition, 1f);
 
     }
 
@@ -71,18 +61,14 @@ public class NetworkPlayer : MonoBehaviour
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(transform.position);
+            Vector3 pos = transform.position;
+            stream.SendNext(pos);
             stream.SendNext(transform.rotation);
-            stream.SendNext(Convert.ToSingle(Input.GetKey(KeyCode.S)) * -1f + Convert.ToSingle(Input.GetKey(KeyCode.W)));
-            stream.SendNext(Convert.ToSingle(Input.GetKey(KeyCode.A)) * -1f + Convert.ToSingle(Input.GetKey(KeyCode.D)));
-            
         }
         else
         {
             RemotePlayerPosition = (Vector3)stream.ReceiveNext();
             RemotePlayerRotation = (Quaternion)stream.ReceiveNext();
-            RemoteLookX = (float)stream.ReceiveNext();
-            RemoteLookZ = (float)stream.ReceiveNext();
         }
     }
 }

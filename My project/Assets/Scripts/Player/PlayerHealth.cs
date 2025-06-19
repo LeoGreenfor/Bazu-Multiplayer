@@ -21,7 +21,7 @@ public class PlayerHealth : MonoBehaviour
         health -= Damage;
         if (health <= 0) 
         {
-            OnLowHealth();
+            GetComponent<PhotonView>().RPC("OnLowHealth", RpcTarget.AllBuffered);
         }
     }
 

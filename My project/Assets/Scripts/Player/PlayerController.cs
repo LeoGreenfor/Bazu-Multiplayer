@@ -1,4 +1,3 @@
-using Unity.Android.Gradle.Manifest;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -17,7 +16,8 @@ public class PlayerController : MonoBehaviour
     public float lookDensity;
     public float looklimit;
 
-    private CharacterController characterController;
+    [HideInInspector]
+    public CharacterController characterController;
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX;
     private bool _isMoving;
@@ -28,6 +28,10 @@ public class PlayerController : MonoBehaviour
         {
             _isMoving = value;
         }
+    }
+    public float GetSpeed()
+    {
+        return walkingSpeed;
     }
 
     void Start()

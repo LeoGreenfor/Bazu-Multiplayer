@@ -39,8 +39,8 @@ namespace UnderdogCity
 
         private void SpawnPlayer()
         {
-            int playersOnScene = GameObject.FindObjectsByType<PlayerController>(sortMode: FindObjectsSortMode.None).Length;
-            var spawnTransform = playerSpawnPoints[0];
+            int playersOnScene = GameObject.FindObjectsByType<PlayerHealth>(sortMode: FindObjectsSortMode.None).Length;
+            var spawnTransform = playerSpawnPoints[playersOnScene];
             LocalPlayer = PhotonNetwork.Instantiate(playerPrefab.name, spawnTransform.position, spawnTransform.rotation);
             PlayerCamera.SetTarget(LocalPlayer);
         }

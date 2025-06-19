@@ -1014,7 +1014,7 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2125140698}
         m_TargetAssemblyTypeName: NetworkConnectionManager, Assembly-CSharp
         m_MethodName: SetRoomCreateCode
         m_Mode: 0
@@ -1647,7 +1647,7 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2125140698}
         m_TargetAssemblyTypeName: NetworkConnectionManager, Assembly-CSharp
         m_MethodName: SetRoomJoinCode
         m_Mode: 0
