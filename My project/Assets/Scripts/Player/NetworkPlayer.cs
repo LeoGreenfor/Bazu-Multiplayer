@@ -47,8 +47,7 @@ public class NetworkPlayer : MonoBehaviour, IPunObservable
         else
         {
             Vector3 moveDir = new Vector3(LagDistance.normalized.x, 0f, LagDistance.normalized.z);
-            //characterController.transform.position = Vector3.MoveTowards(transform.position, RemotePlayerPosition, 1f);
-            //characterController.Move(moveDir * 5f * Time.deltaTime);
+
         }
 
         //Look Smooth

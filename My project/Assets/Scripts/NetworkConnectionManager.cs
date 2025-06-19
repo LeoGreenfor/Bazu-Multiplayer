@@ -38,7 +38,6 @@ public class NetworkConnectionManager : MonoBehaviourPunCallbacks
         {
             TriesToConnectToMaster = true;
 
-            //Settings (all optional and only for tutorial purpose)
             PhotonNetwork.OfflineMode = false;           //true would "fake" an online connection
             PhotonNetwork.NickName = "PlayerName";       //to set a player name
             PhotonNetwork.AutomaticallySyncScene = true; //to call PhotonNetwork.LoadLevel()
